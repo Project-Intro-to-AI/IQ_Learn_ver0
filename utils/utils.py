@@ -2,6 +2,8 @@ import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
+from wrappers.atari_wrapper import LazyFrames
+
 from torch.autograd import Variable
 from torchvision.utils import make_grid, save_image
 
@@ -20,6 +22,16 @@ class eval_mode(object):
         for model, state in zip(self.models, self.prev_states):
             model.train(state)
         return False
+
+def preprocess_obs(obs):
+    """Nếu obs là ảnh (H, W, C) hoặc LazyFrames -> chuyển sang (C, H, W).
+       Nếu obs là vector 1D (như Acrobot) -> giữ nguyên."""
+    if isinstance(obs, LazyFrames):
+        obs = np.array(obs)
+    obs = np.asarray(obs)
+    if obs.ndim == 3:
+        return np.transpose(obs, (2, 0, 1))  # HWC -> CHW
+    return obs  # 1D hoặc đã phù hợp
 
 
 def evaluate(actor, env, num_episodes=10, vis=True):
@@ -40,7 +52,8 @@ def evaluate(actor, env, num_episodes=10, vis=True):
 
         with eval_mode(actor):
             while not done:
-                state = np.transpose(state, (2, 0, 1))  # modified by YL
+                # state = np.transpose(state, (2, 0, 1))  # modified by YL
+                state = preprocess_obs(state)  # modified by Tung
                 action = actor.choose_action(state, sample=False)
                 next_state, reward, done, info = env.step(action)
                 state = next_state

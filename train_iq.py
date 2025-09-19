@@ -28,6 +28,10 @@ from utils.utils import eval_mode, average_dicts, get_concat_samples, evaluate, 
 from utils.logger import Logger
 from iq import iq_loss
 import tqdm
+from omegaconf import OmegaConf
+import gym  # dùng để thăm dò kích thước obs/action từ môi trường
+
+
 
 torch.set_num_threads(2)
 
@@ -39,15 +43,82 @@ def get_args(cfg: DictConfig):
     return cfg
 
 
+def infer_env_dims(env_name: str):
+    """Tạo env tạm để suy ra obs_dim và action_dim rồi đóng ngay."""
+    env = gym.make(env_name)
+    try:
+        # quan sát
+        if hasattr(env.observation_space, "shape") and env.observation_space.shape:
+            obs_dim = int(np.prod(env.observation_space.shape))
+        elif hasattr(env.observation_space, "n"):
+            obs_dim = int(env.observation_space.n)
+        else:
+            raise RuntimeError("Không xác định được obs_dim từ observation_space")
+
+        # hành động
+        act_space = env.action_space
+        if hasattr(act_space, "n"):  # Discrete
+            action_dim = int(act_space.n)
+        elif hasattr(act_space, "shape") and act_space.shape:
+            action_dim = int(np.prod(act_space.shape))
+        else:
+            raise RuntimeError("Không xác định được action_dim từ action_space")
+
+        return obs_dim, action_dim
+    finally:
+        try:
+            env.close()
+        except Exception:
+            pass
+
+
+def preprocess_obs(obs, from_pixels: bool):
+    """
+    Chuẩn hoá quan sát:
+    - Nếu là ảnh (HWC hoặc LazyFrames): chuyển sang CHW.
+    - Nếu là vector 1D: giữ nguyên.
+    """
+    if isinstance(obs, LazyFrames):
+        obs = np.array(obs)  # (H, W, C)
+
+    obs = np.asarray(obs)
+
+    if from_pixels or obs.ndim == 3:
+        # Ảnh: HWC -> CHW
+        return np.transpose(obs, (2, 0, 1))
+    elif obs.ndim == 1:
+        # Vector (ví dụ Acrobot: (6,))
+        return obs
+    else:
+        # Trường hợp khác, cứ squeeze cho an toàn
+        return np.squeeze(obs)
+
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg: DictConfig):
+    # Giữ nguyên DictConfig, KHÔNG resolve sớm
     args = get_args(cfg)
-    #print("args:",args)
 
-    #args = {'exp_name': None, 'project_name': '${env.name}', 'cuda_deterministic': False, 'device': 'cpu', 'gamma': 0.99, 'seed': 0, 'pretrain': None, 'num_seed_steps': 0, 'only_expert_states': False, 'train': {'batch': 256, 'use_target': True, 'soft_update': True}, 'expert': {'demos': 1, 'subsample_freq': 1}, 'eval': {'policy': None, 'threshold': 5000, 'use_baselines': False, 'eps': 10, 'transfer': False, 'expert_env': None}, 'env': {'replay_mem': 1000000.0, 'initial_mem': 1280, 'eps_steps': 100000, 'eps_window': 10, 'learn_steps': 500000.0, 'eval_interval': 5000.0, 'from_pixels': False, 'name': 'Humanoid-v2', 'demo': 'Humanoid-v2_25.pkl'}, 'method': {'type': 'iq', 'loss': 'v0', 'constrain': False, 'grad_pen': False, 'chi': False, 'tanh': False, 'regularize': True, 'div': None, 'alpha': 0.5, 'lambda_gp': 10, 'mix_coeff': 1}, 'log_interval': 500, 'log_dir': 'logs/', 'save_interval': 5, 'hydra_base_dir': 'C:\\Users\\liny2020\\PycharmProjects\\pythonProject2024\\IQ-Learn-main\\IQ-Learn-main\\iq_learn\\outputs\\2024-04-08\\15-04-14', 'eval_only': False, 'offline': False, 'num_actor_updates': 1, 'agent': {'name': 'sac', '_target_': 'agent.sac.SAC', 'obs_dim': '???', 'action_dim': '???', 'critic_cfg': '${q_net}', 'actor_cfg': '${diag_gaussian_actor}', 'init_temp': 1, 'alpha_lr': 0.0003, 'alpha_betas': [0.9, 0.999], 'actor_lr': 3e-05, 'actor_betas': [0.9, 0.999], 'actor_update_frequency': 1, 'critic_lr': 0.0003, 'critic_betas': [0.9, 0.999], 'critic_tau': 0.005, 'critic_target_update_frequency': 1, 'learn_temp': False, 'vdice_actor': False}, 'q_net': {'_target_': 'agent.sac_models.SingleQCritic', 'obs_dim': '${agent.obs_dim}', 'action_dim': '${agent.action_dim}', 'hidden_dim': 256, 'hidden_depth': 2}, 'diag_gaussian_actor': {'_target_': 'agent.sac_models.DiagGaussianActor', 'obs_dim': '${agent.obs_dim}', 'action_dim': '${agent.action_dim}', 'hidden_dim': 256, 'hidden_depth': 2, 'log_std_bounds': [-5, 2]}}
+    # 1) Suy ra kích thước từ env (vd. CartPole-v1 -> obs_dim=4, action_dim=2)
+    obs_dim, action_dim = infer_env_dims(args.env.name)
 
-    wandb.init(project=args.project_name,
-               sync_tensorboard=True, reinit=True, config=args)
+    # 2) Ghi vào cấu hình nếu đang thiếu/??? (Hydra mandatory)
+    if OmegaConf.is_missing(args.agent, "obs_dim") or str(args.agent.obs_dim).strip().startswith("???"):
+        args.agent.obs_dim = obs_dim
+    if OmegaConf.is_missing(args.agent, "action_dim") or str(args.agent.action_dim).strip().startswith("???"):
+        args.agent.action_dim = action_dim
+
+    # 3) Chỉ resolve SAU khi đã có đủ trường (để log lên wandb)
+    cfg_resolved = OmegaConf.to_container(args, resolve=True)
+
+    # 4) Khởi tạo wandb với cấu hình đã đầy đủ
+    wandb.init(
+        project=args.project_name,
+        sync_tensorboard=True,
+        reinit=True,
+        config=cfg_resolved,
+        # name=args.exp_name, dir=args.log_dir,
+    )
+
     # wandb.init(project=args.project_name, entity='iq-learn',
     #            sync_tensorboard=True, reinit=True, config=args)
 
@@ -131,7 +202,9 @@ def main(cfg: DictConfig):
         state = env.reset()
         #print("original state shape:", state.shape)  # modified by YL
         #state = np.array(state) / 255.0 # modified by YL
-        state = np.transpose(state, (2, 0, 1))  # modified by YL
+        # state = np.transpose(state, (2, 0, 1))  # modified by YL
+        state = preprocess_obs(state, args.env.from_pixels)  # modified by Tung
+
         #print("midified state shape:", state.shape)  # modified by YL
         episode_reward = 0
         #done = False
@@ -147,6 +220,7 @@ def main(cfg: DictConfig):
                 with eval_mode(agent):
                     action = agent.choose_action(state, sample=True)
             next_state, reward, done, _ = env.step(action)
+            next_state = preprocess_obs(next_state, args.env.from_pixels)
             episode_reward += reward
             steps += 1
 
@@ -171,7 +245,8 @@ def main(cfg: DictConfig):
                 done_no_lim = 0
             #state_ = np.transpose(state, (2, 0, 1))  # modified by YL
             #print("current state shape:", state.shape)  # modified by YL
-            next_state_ = np.transpose(next_state, (2, 0, 1))  # modified by YL
+            # next_state_ = np.transpose(next_state, (2, 0, 1))  # modified by YL
+            next_state_ = preprocess_obs(next_state, args.env.from_pixels) # modified by Tung
             online_memory_replay.add((state, next_state_, action, reward, done_no_lim))
 
             if online_memory_replay.size() > INITIAL_MEMORY:

@@ -24,7 +24,8 @@ IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-
 
 ## Installation
 
-- Make a conda environment and install dependencies: `pip install -r requirements.txt`
+- Install UV: `pip install uv`
+- Environment and dependency will be automatically installed when run in the first time `uv run train_iq.py agent=softq method=iq env=acrobot env.demo=Acrobot-v1_1000 expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert `
 - Setup wandb project to log and visualize metrics
 - (Optional) Download expert datasets for Atari environments from [GDrive](https://drive.google.com/file/d/1wKdMi10_X0oV4URdkv8JSCY0rRB8iBFq/view?usp=sharing)
 

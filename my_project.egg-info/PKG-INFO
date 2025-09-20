@@ -109,6 +109,7 @@ Requires-Dist: wasabi==1.1.2
 Requires-Dist: watchdog==4.0.0
 Requires-Dist: Werkzeug==3.0.1
 Requires-Dist: zipp==3.17.0
+Requires-Dist: ale-py
 Requires-Dist: pywin32==306; sys_platform == "win32"
 Requires-Dist: pypiwin32==223; sys_platform == "win32"
 Dynamic: license-file
@@ -139,7 +140,8 @@ IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-
 
 ## Installation
 
-- Make a conda environment and install dependencies: `pip install -r requirements.txt`
+- Install UV: `pip install uv`
+- Environment and dependency will be automatically installed when run in the first time `uv run train_iq.py agent=softq method=iq env=acrobot env.demo=Acrobot-v1_1000 expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert `
 - Setup wandb project to log and visualize metrics
 - (Optional) Download expert datasets for Atari environments from [GDrive](https://drive.google.com/file/d/1wKdMi10_X0oV4URdkv8JSCY0rRB8iBFq/view?usp=sharing)
 

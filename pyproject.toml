@@ -122,6 +122,7 @@ dependencies = [
   "Werkzeug==3.0.1",
   "zipp==3.17.0",
   "ale-py",
+  "atari-py",
 
   # Windows-only
   'pywin32==306 ; sys_platform == "win32"',

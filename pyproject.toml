@@ -121,7 +121,7 @@ dependencies = [
   "watchdog==4.0.0",
   "Werkzeug==3.0.1",
   "zipp==3.17.0",
-  "ale-py"
+  "ale-py",
 
   # Windows-only
   'pywin32==306 ; sys_platform == "win32"',

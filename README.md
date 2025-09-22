@@ -24,6 +24,21 @@ IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-
 
 ## Installation
 
+Fix mujoco on linux
+```
+git clone https://github.com/sontungkieu/IQ_Learn.git
+wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz
+mkdir -p ~/.mujoco
+tar -xzf mujoco210-linux-x86_64.tar.gz -C ~/.mujoco
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin
+export MUJOCO_PY_MUJOCO_PATH=~/.mujoco/mujoco210
+sudo apt update
+sudo apt install -y build-essential libosmesa6-dev libgl1-mesa-glx libglfw3 patchelf libglew-dev libgl1-mesa-dev
+
+```
+
+
 - Install UV: `pip install uv`
 - Environment and dependency will be automatically installed when run in the first time `uv run train_iq.py agent=softq method=iq env=acrobot env.demo=Acrobot-v1_1000 expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert `
 - Setup wandb project to log and visualize metrics

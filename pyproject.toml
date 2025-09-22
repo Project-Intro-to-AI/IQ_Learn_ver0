@@ -121,9 +121,13 @@ dependencies = [
   # Windows-only
   'pywin32==306 ; sys_platform == "win32"',
   'pypiwin32==223 ; sys_platform == "win32"',
-  'mujoco_py==1.50.1.68 ; sys_platform == "win32"',
+  "mujoco_py==2.1.2.14",
   "autorom[accept-rom-license]>=0.6.1",
-  "numpy"
+  "cython<3.0",
+]
+[tool.uv]
+environments = [
+    "sys_platform == 'linux'",
 ]
 
 # Khai báo cách tìm package để tránh lỗi "Multiple top-level packages discovered"
@@ -148,5 +152,3 @@ exclude = [
 ]
 
 
-[tool.uv.extra-build-dependencies]
-mujoco-py = ["numpy", "cffi", "Cython", "lockfile"]

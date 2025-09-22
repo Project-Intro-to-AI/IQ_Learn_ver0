@@ -112,7 +112,10 @@ Requires-Dist: zipp==3.17.0
 Requires-Dist: ale-py<0.9,>=0.7.5
 Requires-Dist: pywin32==306; sys_platform == "win32"
 Requires-Dist: pypiwin32==223; sys_platform == "win32"
+Requires-Dist: mujoco_py==1.50.1.68; sys_platform == "win32"
 Requires-Dist: autorom[accept-rom-license]>=0.6.1
+Requires-Dist: numpy
+Requires-Dist: mujoco-py==1.50.1.68
 Dynamic: license-file
 
 # Inverse Q-Learning (IQ-Learn)
@@ -155,7 +158,15 @@ We show some examples that push the boundaries of imitation learning using IQ-Le
 ```
 uv run train_iq.py agent=softq method=iq env=cartpole expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
 ```
-
+```
+uv add "autorom[accept-rom-license]"
+```
+```
+uv sync
+```
+```
+uv run AutoROM --accept-license
+```
 IQ-Learn is the only method thats reaches the expert env reward of **500** (requiring only 3k training steps and less than 30 secs!!)
 
 <img src="../docs/cartpole_example.png" width="500"> 

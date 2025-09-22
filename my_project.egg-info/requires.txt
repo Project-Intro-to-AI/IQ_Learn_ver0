@@ -100,6 +100,8 @@ Werkzeug==3.0.1
 zipp==3.17.0
 ale-py<0.9,>=0.7.5
 autorom[accept-rom-license]>=0.6.1
+numpy
+mujoco-py==1.50.1.68
 
 [:python_version < "3"]
 subprocess32==3.5.4
@@ -107,3 +109,4 @@ subprocess32==3.5.4
 [:sys_platform == "win32"]
 pywin32==306
 pypiwin32==223
+mujoco_py==1.50.1.68

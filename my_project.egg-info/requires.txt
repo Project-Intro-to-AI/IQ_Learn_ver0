@@ -98,7 +98,8 @@ wasabi==1.1.2
 watchdog==4.0.0
 Werkzeug==3.0.1
 zipp==3.17.0
-ale-py
+ale-py<0.9,>=0.7.5
+autorom[accept-rom-license]>=0.6.1
 
 [:python_version < "3"]
 subprocess32==3.5.4

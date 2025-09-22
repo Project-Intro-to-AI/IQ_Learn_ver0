@@ -1,0 +1,692 @@
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Tung\IQ_Learn>uv run train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
+      Built atari-py==0.2.9
+      Built my-project @ file:///C:/Users/Tung/IQ_Learn
+Uninstalled 1 package in 32ms                                                                                                 
+Installed 2 packages in 687ms
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.bash_completion'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.basic_launcher'. Please report to plugin author.        
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.basic_sweeper'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.file_config_source'. Please report to plugin author.    
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.fish_completion'. Please report to plugin author.       
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.importlib_resources_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.structured_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\core\utils.py:143: UserWarning: register_resolver() is deprecated.
+See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+
+  OmegaConf.register_resolver(name, f)
+exp_name: ''
+project_name: ${env.name}
+cuda_deterministic: false
+device: cpu
+gamma: 0.99
+seed: 0
+pretrain: null
+num_seed_steps: 1000
+only_expert_states: false
+train:
+  batch: 64
+  use_target: false
+  soft_update: false
+expert:
+  demos: 30
+  subsample_freq: 1
+eval:
+  policy: null
+  threshold: 21
+  use_baselines: false
+  eps: 10
+  transfer: false
+  expert_env: ''
+env:
+  replay_mem: 100000
+  initial_mem: 5000
+  eps_steps: 1000000.0
+  eps_window: 10
+  learn_steps: 1000000.0
+  eval_interval: 5000.0
+  from_pixels: false
+  name: PongNoFrameskip-v4
+  demo: PongNoFrameskip-v4_40.pkl
+method:
+  type: iq
+  loss: value_expert
+  constrain: false
+  grad_pen: false
+  chi: true
+  tanh: false
+  regularize: false
+  div: null
+  alpha: 0.5
+  lambda_gp: 10
+  mix_coeff: 1
+log_interval: 20
+log_dir: logs/
+save_interval: 5
+hydra_base_dir: C:\Users\Tung\IQ_Learn\outputs\2025-09-22\19-55-17
+eval_only: false
+offline: false
+num_actor_updates: 1
+agent:
+  name: softq
+  class: agent.softq.SoftQ
+  obs_dim: ???
+  action_dim: ???
+  critic_cfg: ${q_net}
+  critic_lr: 0.0001
+  critic_betas:
+  - 0.9
+  - 0.999
+  init_temp: 0.001
+  critic_target_update_frequency: 1000
+  critic_tau: 0.1
+q_net:
+  _target_: agent.softq_models.AtariQNetwork
+  obs_dim: ${agent.obs_dim}
+  action_dim: ${agent.action_dim}
+
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 207, in run_and_report
+    return func()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 356, in <lambda>
+    lambda: hydra.run(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\hydra.py", line 107, in run
+    return run_job(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\core\utils.py", line 125, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 102, in main
+    obs_dim, action_dim = infer_env_dims(args.env.name)
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 48, in infer_env_dims
+    env = gym.make(env_name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 490, in make
+    versions = self.env_specs.versions(namespace, name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 220, in versions
+    self._assert_name_exists(namespace, name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 297, in _assert_name_exists
+    raise error.NameNotFound(message)
+gym.error.NameNotFound: The environment `PongNoFrameskip` has been moved out of Gym to the package `ale-py`. Please install the package via `pip install ale-py`.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 418, in <module>
+    main()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\main.py", line 32, in decorated_main
+    _run_hydra(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 355, in _run_hydra
+    run_and_report(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 276, in run_and_report
+    print_exception(etype=None, value=ex, tb=final_tb)  # type: ignore
+TypeError: print_exception() got an unexpected keyword argument 'etype'
+
+C:\Users\Tung\IQ_Learn>del uv.lock
+
+C:\Users\Tung\IQ_Learn>uv run train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.                     
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.bash_completion'. Please report to plugin author.       
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.basic_launcher'. Please report to plugin author.        
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.basic_sweeper'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.file_config_source'. Please report to plugin author.    
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.fish_completion'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.importlib_resources_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.structured_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\core\utils.py:143: UserWarning: register_resolver() is deprecated.
+See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+
+  OmegaConf.register_resolver(name, f)
+exp_name: ''
+project_name: ${env.name}
+cuda_deterministic: false
+device: cpu
+gamma: 0.99
+seed: 0
+pretrain: null
+num_seed_steps: 1000
+only_expert_states: false
+train:
+  batch: 64
+  use_target: false
+  soft_update: false
+expert:
+  demos: 30
+  subsample_freq: 1
+eval:
+  policy: null
+  threshold: 21
+  use_baselines: false
+  eps: 10
+  transfer: false
+  expert_env: ''
+env:
+  replay_mem: 100000
+  initial_mem: 5000
+  eps_steps: 1000000.0
+  eps_window: 10
+  learn_steps: 1000000.0
+  eval_interval: 5000.0
+  from_pixels: false
+  name: PongNoFrameskip-v4
+  demo: PongNoFrameskip-v4_40.pkl
+method:
+  type: iq
+  loss: value_expert
+  constrain: false
+  grad_pen: false
+  chi: true
+  tanh: false
+  regularize: false
+  div: null
+  alpha: 0.5
+  lambda_gp: 10
+  mix_coeff: 1
+log_interval: 20
+log_dir: logs/
+save_interval: 5
+hydra_base_dir: C:\Users\Tung\IQ_Learn\outputs\2025-09-22\19-55-58
+eval_only: false
+offline: false
+num_actor_updates: 1
+agent:
+  name: softq
+  class: agent.softq.SoftQ
+  obs_dim: ???
+  action_dim: ???
+  critic_cfg: ${q_net}
+  critic_lr: 0.0001
+  critic_betas:
+  - 0.9
+  - 0.999
+  init_temp: 0.001
+  critic_target_update_frequency: 1000
+  critic_tau: 0.1
+q_net:
+  _target_: agent.softq_models.AtariQNetwork
+  obs_dim: ${agent.obs_dim}
+  action_dim: ${agent.action_dim}
+
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 207, in run_and_report
+    return func()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 356, in <lambda>
+    lambda: hydra.run(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\hydra.py", line 107, in run
+    return run_job(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\core\utils.py", line 125, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 102, in main
+    obs_dim, action_dim = infer_env_dims(args.env.name)
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 48, in infer_env_dims
+    env = gym.make(env_name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 490, in make
+    versions = self.env_specs.versions(namespace, name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 220, in versions
+    self._assert_name_exists(namespace, name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 297, in _assert_name_exists
+    raise error.NameNotFound(message)
+gym.error.NameNotFound: The environment `PongNoFrameskip` has been moved out of Gym to the package `ale-py`. Please install the package via `pip install ale-py`.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 418, in <module>
+    main()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\main.py", line 32, in decorated_main
+    _run_hydra(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 355, in _run_hydra
+    run_and_report(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 276, in run_and_report
+    print_exception(etype=None, value=ex, tb=final_tb)  # type: ignore
+TypeError: print_exception() got an unexpected keyword argument 'etype'
+
+C:\Users\Tung\IQ_Learn>uv lock
+Resolved 125 packages in 1ms
+
+C:\Users\Tung\IQ_Learn>uv lock
+Resolved 124 packages in 474ms
+Updated ale-py v0.10.1, v0.11.2 -> v0.8.1
+
+C:\Users\Tung\IQ_Learn>uv sync
+Resolved 124 packages in 1ms
+      Built my-project @ file:///C:/Users/Tung/IQ_Learn
+Prepared 2 packages in 2.88s
+Uninstalled 2 packages in 49ms                                                                                                
+Installed 2 packages in 33ms
+ - ale-py==0.11.2
+ + ale-py==0.8.1
+ ~ my-project==0.1.0 (from file:///C:/Users/Tung/IQ_Learn)
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 3, in <module>
+    gym.register_envs(ale_py)
+AttributeError: module 'gym' has no attribute 'register_envs'
+
+C:\Users\Tung\IQ_Learn>uv run train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.bash_completion'. Please report to plugin author.       
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.basic_launcher'. Please report to plugin author.        
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.basic_sweeper'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.file_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.fish_completion'. Please report to plugin author.       
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.importlib_resources_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+<frozen importlib._bootstrap_external>:572: DeprecationWarning: find_module() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+<frozen importlib._bootstrap_external>:1523: DeprecationWarning: FileFinder.find_loader() is deprecated and slated for removal in Python 3.12; use find_spec() instead
+[Hydra plugins scanner] : warnings from 'hydra._internal.core_plugins.structured_config_source'. Please report to plugin author.
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\core\utils.py:143: UserWarning: register_resolver() is deprecated.
+See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+
+  OmegaConf.register_resolver(name, f)
+exp_name: ''
+project_name: ${env.name}
+cuda_deterministic: false
+device: cpu
+gamma: 0.99
+seed: 0
+pretrain: null
+num_seed_steps: 1000
+only_expert_states: false
+train:
+  batch: 64
+  use_target: false
+  soft_update: false
+expert:
+  demos: 30
+  subsample_freq: 1
+eval:
+  policy: null
+  threshold: 21
+  use_baselines: false
+  eps: 10
+  transfer: false
+  expert_env: ''
+env:
+  replay_mem: 100000
+  initial_mem: 5000
+  eps_steps: 1000000.0
+  eps_window: 10
+  learn_steps: 1000000.0
+  eval_interval: 5000.0
+  from_pixels: false
+  name: PongNoFrameskip-v4
+  demo: PongNoFrameskip-v4_40.pkl
+method:
+  type: iq
+  loss: value_expert
+  constrain: false
+  grad_pen: false
+  chi: true
+  tanh: false
+  regularize: false
+  div: null
+  alpha: 0.5
+  lambda_gp: 10
+  mix_coeff: 1
+log_interval: 20
+log_dir: logs/
+save_interval: 5
+hydra_base_dir: C:\Users\Tung\IQ_Learn\outputs\2025-09-22\20-01-01
+eval_only: false
+offline: false
+num_actor_updates: 1
+agent:
+  name: softq
+  class: agent.softq.SoftQ
+  obs_dim: ???
+  action_dim: ???
+  critic_cfg: ${q_net}
+  critic_lr: 0.0001
+  critic_betas:
+  - 0.9
+  - 0.999
+  init_temp: 0.001
+  critic_target_update_frequency: 1000
+  critic_tau: 0.1
+q_net:
+  _target_: agent.softq_models.AtariQNetwork
+  obs_dim: ${agent.obs_dim}
+  action_dim: ${agent.action_dim}
+
+A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
+[Powered by Stella]
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 207, in run_and_report
+    return func()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 356, in <lambda>
+    lambda: hydra.run(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\hydra.py", line 107, in run
+    return run_job(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\core\utils.py", line 125, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 102, in main
+    obs_dim, action_dim = infer_env_dims(args.env.name)
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 48, in infer_env_dims
+    env = gym.make(env_name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 520, in make
+    return spec.make(**kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 140, in make
+    env = cls(**_kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 155, in __init__
+    self.seed()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 205, in seed
+    if not hasattr(roms, self._game):
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\roms\__init__.py", line 118, in __getattr__
+    path = _resolve_rom(name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\roms\__init__.py", line 48, in _resolve_rom
+    rom_path = package.resolve(rom_id)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\roms\plugins.py", line 39, in resolve
+    rom = resources.files(self.package).joinpath(f"{id}.bin")
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\_common.py", line 22, in files
+    return from_package(get_package(package))
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\_common.py", line 66, in get_package
+    resolved = resolve(package)
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\_common.py", line 57, in resolve
+    return cand if isinstance(cand, types.ModuleType) else importlib.import_module(cand)
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 992, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\atari_py\__init__.py", line 1, in <module>
+    from .ale_python_interface import *
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\atari_py\ale_python_interface.py", line 17, in <module>
+    ale_lib = cdll.LoadLibrary(os.path.join(os.path.dirname(__file__),
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\ctypes\__init__.py", line 452, in LoadLibrary
+    return self._dlltype(name)
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\ctypes\__init__.py", line 374, in __init__
+    self._handle = _dlopen(self._name, mode)
+FileNotFoundError: Could not find module 'C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\atari_py\ale_interface\ale_c.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\train_iq.py", line 418, in <module>
+    main()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\main.py", line 32, in decorated_main
+    _run_hydra(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 355, in _run_hydra
+    run_and_report(
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\hydra\_internal\utils.py", line 246, in run_and_report
+    assert mdl is not None
+AssertionError
+
+C:\Users\Tung\IQ_Learn>uv run temp.py                                                                                         
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 3, in <module>
+    gym.register_envs(ale_py)
+AttributeError: module 'gym' has no attribute 'register_envs'
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
+[Powered by Stella]
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 5, in <module>
+    env = gym.make("PongNoFrameskip-v4")
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 520, in make
+    return spec.make(**kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 140, in make
+    env = cls(**_kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 155, in __init__
+    self.seed()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 205, in seed
+    if not hasattr(roms, self._game):
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\roms\__init__.py", line 118, in __getattr__
+    path = _resolve_rom(name)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\roms\__init__.py", line 48, in _resolve_rom
+    rom_path = package.resolve(rom_id)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\roms\plugins.py", line 39, in resolve
+    rom = resources.files(self.package).joinpath(f"{id}.bin")
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\_common.py", line 22, in files
+    return from_package(get_package(package))
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\_common.py", line 66, in get_package
+    resolved = resolve(package)
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\_common.py", line 57, in resolve
+    return cand if isinstance(cand, types.ModuleType) else importlib.import_module(cand)
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 992, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\atari_py\__init__.py", line 1, in <module>
+    from .ale_python_interface import *
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\atari_py\ale_python_interface.py", line 17, in <module>
+    ale_lib = cdll.LoadLibrary(os.path.join(os.path.dirname(__file__),
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\ctypes\__init__.py", line 452, in LoadLibrary
+    return self._dlltype(name)
+  File "C:\Users\Tung\AppData\Roaming\uv\python\cpython-3.10.18-windows-x86_64-none\lib\ctypes\__init__.py", line 374, in __init__
+    self._handle = _dlopen(self._name, mode)
+FileNotFoundError: Could not find module 'C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\atari_py\ale_interface\ale_c.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+C:\Users\Tung\IQ_Learn>uv lock 
+Resolved 123 packages in 356ms                                                                                                
+Removed atari-py v0.2.9
+
+C:\Users\Tung\IQ_Learn>uv sync
+Resolved 123 packages in 2ms
+      Built my-project @ file:///C:/Users/Tung/IQ_Learn
+Prepared 1 package in 2.61s
+Uninstalled 2 packages in 69ms
+Installed 1 package in 14ms
+ - atari-py==0.2.9
+ ~ my-project==0.1.0 (from file:///C:/Users/Tung/IQ_Learn)
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
+[Powered by Stella]
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 5, in <module>
+    env = gym.make("PongNoFrameskip-v4")
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 520, in make
+    return spec.make(**kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 140, in make
+    env = cls(**_kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 155, in __init__
+    self.seed()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 206, in seed
+    raise error.Error(
+gym.error.Error: We're Unable to find the game "Pong". Note: Gym no longer distributes ROMs. If you own a license to use the necessary ROMs for research purposes you can download them via `pip install gym[accept-rom-license]`. Otherwise, you should try importing "Pong" via the command `ale-import-roms`. If you believe this is a mistake perhaps your copy of "Pong" is unsupported. To check if this is the case try providing the environment variable `PYTHONWARNINGS=default::ImportWarning:ale_py.roms`. For more information see: https://github.com/mgbellemare/Arcade-Learning-Environment#rom-management
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py:505: UserWarning: WARN: The environment PongNoFrameskip-v1 is out of date. You should consider upgrading to version `v4` with the environment ID `PongNoFrameskip-v4`.
+  logger.warn(
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 5, in <module>
+    env = gym.make("PongNoFrameskip-v1")
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 518, in make
+    spec = self.spec(path)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 540, in spec
+    return self.env_specs[id]
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 376, in __getitem__
+    self._assert_version_exists(namespace, name, version)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 342, in _assert_version_exists
+    raise error.DeprecatedEnv(message)
+gym.error.DeprecatedEnv: Environment version `v1` for `PongNoFrameskip` is deprecated. Please use the latest version `v4`.    
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py:505: UserWarning: WARN: The environment PongNoFrameskip-v2 is out of date. You should consider upgrading to version `v4` with the environment ID `PongNoFrameskip-v4`.
+  logger.warn(
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 5, in <module>
+    env = gym.make("PongNoFrameskip-v2")
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 518, in make
+    spec = self.spec(path)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 540, in spec
+    return self.env_specs[id]
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 376, in __getitem__
+    self._assert_version_exists(namespace, name, version)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 342, in _assert_version_exists
+    raise error.DeprecatedEnv(message)
+gym.error.DeprecatedEnv: Environment version `v2` for `PongNoFrameskip` is deprecated. Please use the latest version `v4`.    
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
+[Powered by Stella]
+Traceback (most recent call last):
+  File "C:\Users\Tung\IQ_Learn\temp.py", line 5, in <module>
+    env = gym.make("PongNoFrameskip-v4")
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 676, in make
+    return registry.make(id, **kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 520, in make
+    return spec.make(**kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\gym\envs\registration.py", line 140, in make
+    env = cls(**_kwargs)
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 155, in __init__
+    self.seed()
+  File "C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\ale_py\env\gym.py", line 206, in seed
+    raise error.Error(
+gym.error.Error: We're Unable to find the game "Pong". Note: Gym no longer distributes ROMs. If you own a license to use the necessary ROMs for research purposes you can download them via `pip install gym[accept-rom-license]`. Otherwise, you should try importing "Pong" via the command `ale-import-roms`. If you believe this is a mistake perhaps your copy of "Pong" is unsupported. To check if this is the case try providing the environment variable `PYTHONWARNINGS=default::ImportWarning:ale_py.roms`. For more information see: https://github.com/mgbellemare/Arcade-Learning-Environment#rom-management
+
+C:\Users\Tung\IQ_Learn>uv add autorom[accept-rom-license]
+Resolved 125 packages in 5.17s
+      Built autorom-accept-rom-license==0.6.1
+      Built my-project @ file:///C:/Users/Tung/IQ_Learn
+Prepared 3 packages in 3.56s
+Uninstalled 1 package in 4ms                                                                                                  
+Installed 3 packages in 222ms
+ + autorom==0.6.1
+ + autorom-accept-rom-license==0.6.1
+ ~ my-project==0.1.0 (from file:///C:/Users/Tung/IQ_Learn)
+
+C:\Users\Tung\IQ_Learn>uv run python -m AutoROM --accept-rom-license
+C:\Users\Tung\IQ_Learn\.venv\Scripts\python.exe: No module named AutoROM.__main__; 'AutoROM' is a package and cannot be directly executed
+
+C:\Users\Tung\IQ_Learn>uv sync
+Resolved 125 packages in 84ms
+Audited 110 packages in 37ms
+
+C:\Users\Tung\IQ_Learn>uv run AutoROM --accept-license
+C:\Users\Tung\IQ_Learn\.venv\lib\site-packages\AutoROM\AutoROM.py:264: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+AutoROM will download the Atari 2600 ROMs.
+They will be installed to:
+        C:\Users\Tung\IQ_Learn\.venv\Lib\site-packages\AutoROM\roms
+
+Existing ROMs will be overwritten.
+
+C:\Users\Tung\IQ_Learn>uv run temp.py
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
+[Powered by Stella]
+Môi trường được tạo thành công!
+Observation space: Box(0, 255, (210, 160, 3), uint8)
+Action space: Discrete(6)

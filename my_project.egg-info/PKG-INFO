@@ -109,9 +109,10 @@ Requires-Dist: wasabi==1.1.2
 Requires-Dist: watchdog==4.0.0
 Requires-Dist: Werkzeug==3.0.1
 Requires-Dist: zipp==3.17.0
-Requires-Dist: ale-py
+Requires-Dist: ale-py<0.9,>=0.7.5
 Requires-Dist: pywin32==306; sys_platform == "win32"
 Requires-Dist: pypiwin32==223; sys_platform == "win32"
+Requires-Dist: autorom[accept-rom-license]>=0.6.1
 Dynamic: license-file
 
 # Inverse Q-Learning (IQ-Learn)
@@ -152,7 +153,7 @@ We show some examples that push the boundaries of imitation learning using IQ-Le
 ### 1. CartPole-v1 using 1 demo subsampled 20 times with fully *offline* imitation  
 
 ```
-python train_iq.py agent=softq method=iq env=cartpole expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
+uv run train_iq.py agent=softq method=iq env=cartpole expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
 ```
 
 IQ-Learn is the only method thats reaches the expert env reward of **500** (requiring only 3k training steps and less than 30 secs!!)
@@ -162,7 +163,7 @@ IQ-Learn is the only method thats reaches the expert env reward of **500** (requ
 ### 2. Playing Pong at human performance
 
 ```
-python train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
+uv run train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
 ```
 
 Again, IQ-Learn is the only method thats reaches the expert env reward of **21** <br>

@@ -36,9 +36,17 @@ We show some examples that push the boundaries of imitation learning using IQ-Le
 ### 1. CartPole-v1 using 1 demo subsampled 20 times with fully *offline* imitation  
 
 ```
-python train_iq.py agent=softq method=iq env=cartpole expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
+uv run train_iq.py agent=softq method=iq env=cartpole expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
 ```
-
+```
+uv add "autorom[accept-rom-license]"
+```
+```
+uv sync
+```
+```
+uv run AutoROM --accept-license
+```
 IQ-Learn is the only method thats reaches the expert env reward of **500** (requiring only 3k training steps and less than 30 secs!!)
 
 <img src="../docs/cartpole_example.png" width="500"> 
@@ -46,7 +54,7 @@ IQ-Learn is the only method thats reaches the expert env reward of **500** (requ
 ### 2. Playing Pong at human performance
 
 ```
-python train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
+uv run train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
 ```
 
 Again, IQ-Learn is the only method thats reaches the expert env reward of **21** <br>

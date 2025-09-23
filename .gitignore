@@ -2,5 +2,6 @@
 /__pycache__/
 *.log
 /outputs/
-/my_project.egg-info/
+/my_project.egg-info/*
 uv.lock
+mujoco210-linux-x86_64.tar.gz

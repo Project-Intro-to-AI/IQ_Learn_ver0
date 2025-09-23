@@ -13,6 +13,7 @@ import torch.nn.functional as F
 import wandb
 from omegaconf import DictConfig, OmegaConf
 from tensorboardX import SummaryWriter
+from train_iq import infer_env_dims  # Hoặc from make_envs import infer_env_dims nếu hàm ở đó
 
 from utils.logger import Logger
 from make_envs import make_env
@@ -33,9 +34,32 @@ def get_args(cfg: DictConfig):
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg: DictConfig):
     args = get_args(cfg)
-    wandb.init(project=args.env.name + '_rl', entity='iq-learn',
-               sync_tensorboard=True, reinit=True, config=args)
+    
+    # Infer dims using the fully-wrapped env
+    env_temp = make_env(args)
+    obs_space = env_temp.observation_space
+    act_space = env_temp.action_space
 
+    if len(obs_space.shape) == 3 and args.env.from_pixels:
+        # For pixels, flatten (though not strictly used when from_pixels=true, as CNN handles it)
+        obs_dim = int(np.prod(obs_space.shape))  # e.g., 84*84*3 = 21168
+    else:
+        obs_dim = int(np.prod(obs_space.shape))  # e.g., 17 for HalfCheetah-v2 state
+
+    if hasattr(act_space, "n"):
+        action_dim = int(act_space.n)
+    else:
+        action_dim = int(np.prod(act_space.shape))
+
+    args.agent.obs_dim = obs_dim
+    args.agent.action_dim = action_dim
+
+    env_temp.close()
+    
+    wandb.init(project=args.env.name + '_rl',
+           sync_tensorboard=True, reinit=True, config=OmegaConf.to_container(args, resolve=True))
+    
+    # ... phần còn lại giữ nguyên
     # set seeds
     random.seed(args.seed)
     np.random.seed(args.seed)

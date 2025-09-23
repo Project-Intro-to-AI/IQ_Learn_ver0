@@ -43,13 +43,23 @@ def get_args(cfg: DictConfig):
     return cfg
 
 
-def infer_env_dims(env_name: str):
+import numpy as np
+import gym
+from wrappers.pixel_wrapper import PixelObservationWrapper  # Import custom wrapper (từ phản hồi trước)
+
+def infer_env_dims(env_name: str, args=None):  # Thêm args để check from_pixels
     """Tạo env tạm để suy ra obs_dim và action_dim rồi đóng ngay."""
     env = gym.make(env_name)
+    if args and args.env.from_pixels:
+        env = PixelObservationWrapper(env, pixels_only=True)  # Áp dụng wrapper pixel
+
     try:
         # quan sát
-        if hasattr(env.observation_space, "shape") and env.observation_space.shape:
-            obs_dim = int(np.prod(env.observation_space.shape))
+        obs_shape = env.observation_space.shape
+        if len(obs_shape) == 3:  # Pixel (H, W, C)
+            obs_dim = obs_shape  # Return tuple for CNN (84, 84, 3)
+        elif len(obs_shape) > 0:
+            obs_dim = int(np.prod(obs_shape))  # Flatten for state
         elif hasattr(env.observation_space, "n"):
             obs_dim = int(env.observation_space.n)
         else:
@@ -59,7 +69,7 @@ def infer_env_dims(env_name: str):
         act_space = env.action_space
         if hasattr(act_space, "n"):  # Discrete
             action_dim = int(act_space.n)
-        elif hasattr(act_space, "shape") and act_space.shape:
+        elif len(act_space.shape) > 0:
             action_dim = int(np.prod(act_space.shape))
         else:
             raise RuntimeError("Không xác định được action_dim từ action_space")

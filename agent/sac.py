@@ -26,15 +26,18 @@ class SAC(object):
         #del critic_config.hidden_dim
         #del critic_config.hidden_depth
         #print("===>", critic_config)
-        self.critic = hydra.utils.instantiate(critic_config, args=args).to(self.device)
+        # self.critic = hydra.utils.instantiate(critic_config, args=args).to(self.device)
+        self.critic = hydra.utils.instantiate(critic_config, args=args, from_pixels=args.env.from_pixels).to(self.device)
 
-
-        self.critic_target = hydra.utils.instantiate(critic_config, args=args).to(
-            self.device)
+        # self.critic_target = hydra.utils.instantiate(critic_config, args=args).to(
+        #     self.device)
+        self.critic_target = hydra.utils.instantiate(critic_config, args=args, from_pixels=args.env.from_pixels).to(self.device)
+        # self.critic_target.load_state_dict(self.critic.state_dict())
         self.critic_target.load_state_dict(self.critic.state_dict())
 
 
-        self.actor = hydra.utils.instantiate(agent_cfg.actor_cfg).to(self.device)
+        # self.actor = hydra.utils.instantiate(agent_cfg.actor_cfg).to(self.device)
+        self.actor = hydra.utils.instantiate(agent_cfg.actor_cfg, from_pixels=args.env.from_pixels).to(self.device)
 
         self.log_alpha = torch.tensor(np.log(agent_cfg.init_temp)).to(self.device)
         self.log_alpha.requires_grad = True
@@ -126,16 +129,17 @@ class SAC(object):
         return losses
 
     def update_critic(self, obs, action, reward, next_obs, done, logger, step):
-
         with torch.no_grad():
             next_action, log_prob, _ = self.actor.sample(next_obs)
 
-            target_Q = self.critic_target(next_obs, next_action)
-            target_V = target_Q - self.alpha.detach() * log_prob
+            # Unpack target Qs and take min
+            target_Q1, target_Q2 = self.critic_target(next_obs, next_action)
+            min_target_Q = torch.min(target_Q1, target_Q2)
+            target_V = min_target_Q - self.alpha.detach() * log_prob
             target_Q = reward + (1 - done) * self.gamma * target_V
 
         # get current Q estimates
-        current_Q1, current_Q2 = self.critic(obs, action, both=True)
+        current_Q1, current_Q2 = self.critic(obs, action)
         q1_loss = F.mse_loss(current_Q1, target_Q)
         q2_loss = F.mse_loss(current_Q2, target_Q)
         critic_loss = q1_loss + q2_loss
@@ -152,41 +156,33 @@ class SAC(object):
             'loss/critic': critic_loss.item()}
 
     def update_actor_and_alpha(self, obs, logger, step):
+        self.actor_optimizer.zero_grad()
+
+        # Sample actions from actor
         action, log_prob, _ = self.actor.sample(obs)
-        actor_Q = self.critic(obs, action)
+
+        # Unpack and take min Q from critic (fix lỗi tuple - tensor)
+        actor_Q1, actor_Q2 = self.critic(obs, action)
+        actor_Q = torch.min(actor_Q1, actor_Q2)
 
         actor_loss = (self.alpha.detach() * log_prob - actor_Q).mean()
 
-        logger.log('train/actor_loss', actor_loss, step)
-        logger.log('train/target_entropy', self.target_entropy, step)
-        logger.log('train/actor_entropy', -log_prob.mean(), step)
-
-        # optimize the actor
-        self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
 
-        losses = {
+        # Phần alpha update (nếu chưa có, thêm tương tự critic)
+        # alpha_loss = -(self.log_alpha * (log_prob + self.target_entropy).detach()).mean()
+        # self.log_alpha_optimizer.zero_grad()
+        # alpha_loss.backward()
+        # self.log_alpha_optimizer.step()
+        # self.alpha = self.log_alpha.exp()
+
+        # self.actor.log(logger, step)  # Nếu có method log
+
+        return {
             'loss/actor': actor_loss.item(),
-            'actor_loss/target_entropy': self.target_entropy,
-            'actor_loss/entropy': -log_prob.mean().item()}
-
-        # self.actor.log(logger, step)
-        if self.learn_temp:
-            self.log_alpha_optimizer.zero_grad()
-            alpha_loss = (self.alpha *
-                          (-log_prob - self.target_entropy).detach()).mean()
-            logger.log('train/alpha_loss', alpha_loss, step)
-            logger.log('train/alpha_value', self.alpha, step)
-
-            alpha_loss.backward()
-            self.log_alpha_optimizer.step()
-
-            losses.update({
-                'alpha_loss/loss': alpha_loss.item(),
-                'alpha_loss/value': self.alpha.item(),
-            })
-        return losses
+            # 'loss/alpha': alpha_loss.item() nếu thêm alpha update
+        }
 
     # Save model parameters
     def save(self, path, suffix=""):

@@ -4,7 +4,7 @@ from stable_baselines3.common.monitor import Monitor
 
 from wrappers.atari_wrapper import ScaledFloatFrame, FrameStack, FrameStackEager, PyTorchFrame
 from wrappers.normalize_action_wrapper import check_and_normalize_box_actions
-
+from wrappers.pixel_wrapper import PixelObservationWrapper
 import envs
 import numpy as np
 import os
@@ -78,6 +78,8 @@ def make_env(args, monitor=True):
         env = make_dcm(args)
     else:
         env = gym.make(args.env.name)
+    if args.env.from_pixels:
+        env = PixelObservationWrapper(env, pixels_only=True)
     
     if monitor:
         env = Monitor(env, "gym")

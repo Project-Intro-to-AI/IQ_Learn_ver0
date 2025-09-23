@@ -32,9 +32,13 @@ mkdir -p ~/.mujoco
 tar -xzf mujoco210-linux-x86_64.tar.gz -C ~/.mujoco
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin 
 export MUJOCO_PY_MUJOCO_PATH=~/.mujoco/mujoco210
 sudo apt update
-sudo apt install -y build-essential libosmesa6-dev libgl1-mesa-glx libglfw3 patchelf libglew-dev libgl1-mesa-dev
+#ubuntu <22.04
+sudo apt install -y build-essential libosmesa6-dev libgl1-mesa-glx libglfw3 patchelf libglew-dev libglx-mesa0
+#ubuntu >22.04 
+sudo apt install -y build-essential libosmesa6-dev libglx-mesa0 libglfw3 patchelf libglew-dev libgl1-mesa-dev 
 
 ```
 
@@ -71,6 +75,9 @@ IQ-Learn is the only method thats reaches the expert env reward of **500** (requ
 ```
 uv run train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
 ```
+
+```
+uv run train_iq.py env=humanoid agent=sac expert.demos=1 method.loss=v0 method.regularize=True agent.actor_lr=3e-05 seed=0 agent.init_temp=1```
 
 Again, IQ-Learn is the only method thats reaches the expert env reward of **21** <br>
 (we find better hyperparams compared to the original paper)

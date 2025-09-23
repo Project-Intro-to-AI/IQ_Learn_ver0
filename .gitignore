@@ -2,3 +2,5 @@
 /__pycache__/
 *.log
 /outputs/
+/my_project.egg-info/
+uv.lock

@@ -89,7 +89,8 @@ Again, IQ-Learn is the only method thats reaches the expert env reward of **21**
 ### 3. Controlling a Humanoid with imitation of a single expert
 
 ```
-python train_iq.py env=humanoid agent=sac expert.demos=1 method.loss=v0 method.regularize=True agent.actor_lr=3e-05 seed=0 agent.init_temp=1
+uv run python train_rl.py env=humanoid env.from_pixels=true agent=sac seed=0
+uv run train_iq.py env=humanoid agent=sac expert.demos=1 method.loss=v0 method.regularize=True agent.actor_lr=3e-05 seed=0 agent.init_temp=1
 ```
 
 IQ-Learn learns to control a full humanoid at expert performance using a single demonstration reaching the expert env reward of **5300** <br>
